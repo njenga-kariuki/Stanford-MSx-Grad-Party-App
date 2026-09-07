@@ -25,7 +25,6 @@ const AdminView: React.FC = () => {
         if (shuttlesError) throw new Error(`Error fetching shuttles: ${shuttlesError.message}`);
         if (!shuttlesData) throw new Error('No shuttle data returned');
 
-        console.log('[AdminView] Shuttles data:', shuttlesData);
 
         const { data: registrationsData, error: registrationsError } = await supabase
           .from('registrations')
@@ -35,7 +34,6 @@ const AdminView: React.FC = () => {
         if (registrationsError) throw new Error(`Error fetching registrations: ${registrationsError.message}`);
         if (!registrationsData) throw new Error('No registrations data returned');
         
-        console.log('[AdminView] Registrations data:', registrationsData);
 
         const combinedInfo: CombinedRegistrationInfo[] = registrationsData.map(reg => {
           const shuttle = shuttlesData.find(s => s.id === reg.shuttle_id);
@@ -70,7 +68,6 @@ const AdminView: React.FC = () => {
           return timeA - timeB;
         });
         
-        console.log('[AdminView] Combined registration info (sorted by shuttle time):', combinedInfo);
         setAllRegistrationsInfo(combinedInfo);
 
       } catch (err: any) {

@@ -25,7 +25,6 @@ export const ShuttleProvider: React.FC<{ children: React.ReactNode }> = ({ child
         .select('id, time, type')
         .order('time', { ascending: true });
 
-      console.log('[ShuttleContext] Shuttle definitions raw data:', shuttleDefinitions);
       console.error('[ShuttleContext] Shuttle definitions error:', shuttleError);
 
       if (shuttleError) {
@@ -49,7 +48,6 @@ export const ShuttleProvider: React.FC<{ children: React.ReactNode }> = ({ child
         .select('*')
         .order('timestamp', { ascending: true }); // Optional: order by timestamp
 
-      console.log('[ShuttleContext] All registrations raw data:', allRegistrations);
       console.error('[ShuttleContext] All registrations error:', registrationError);
 
       if (registrationError) {
@@ -61,7 +59,6 @@ export const ShuttleProvider: React.FC<{ children: React.ReactNode }> = ({ child
       // Ensure shuttleDefinitions is an array before mapping, even if it was null from a non-erroring empty response
       const definitionsToProcess = shuttleDefinitions || [];
 
-      console.log('[ShuttleContext] Combining data... Definitions to process:', definitionsToProcess);
       const combinedShuttles: Shuttle[] = definitionsToProcess.map(shuttleDef => {
         const shuttleRegistrations = allRegistrations?.filter(reg => reg.shuttle_id === shuttleDef.id) || [];
         return {
@@ -76,7 +73,6 @@ export const ShuttleProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }))
         };
       });
-      console.log('[ShuttleContext] Combined shuttles data:', combinedShuttles);
       setShuttles(combinedShuttles);
     } catch (err: any) {
       console.error("[ShuttleContext] CRITICAL ERROR in fetchAllData:", err.message, err.stack);
@@ -100,7 +96,6 @@ export const ShuttleProvider: React.FC<{ children: React.ReactNode }> = ({ child
         'postgres_changes',
         { event: '*', schema: 'public', table: 'registrations' },
         (payload) => {
-          console.log('[ShuttleContext] Realtime change received!', payload);
           fetchAllData(); // Re-fetch all data on any change
         }
       )
@@ -113,14 +108,12 @@ export const ShuttleProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []); // Empty dependency array means this runs once on mount
 
   const addRegistration = async (shuttleId: string, name: string, guests: number) => {
-    console.log(`[ShuttleContext] Attempting to add registration for shuttle ${shuttleId}:`, { name, guests });
     try {
       const { data, error } = await supabase
         .from('registrations')
         .insert([{ shuttle_id: shuttleId, name, guests, timestamp: new Date().toISOString() }])
         .select(); // .select() can return the inserted row(s)
 
-      console.log('[ShuttleContext] Add registration response data:', data);
       console.error('[ShuttleContext] Add registration response error:', error);
       if (error) throw error;
       
@@ -157,7 +150,6 @@ export const ShuttleProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const updateRegistration = async (shuttleId: string, registrationId: string, name: string, guests: number) => {
-    console.log(`[ShuttleContext] Attempting to update registration ${registrationId}:`, { name, guests });
      // shuttleId is not directly used for update here as registrationId is unique
     try {
       const { error } = await supabase

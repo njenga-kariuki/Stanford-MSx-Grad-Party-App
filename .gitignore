@@ -26,3 +26,6 @@ dist-ssr
 # Environment variables
 .env
 .env.*
+
+# Local configuration and private runtime data
+!.env.example

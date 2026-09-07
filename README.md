@@ -1,28 +1,22 @@
-# MSx Finale Shuttle Tracker 🚌
+# MSx Finale Shuttle Tracker
 
-This project was created to simplify shuttle transportation for the Stanford GSB MSx 2025 graduation celebration at Rosewood Sand Hill. It's a practical application built to enhance the event experience while showcasing some development skills.
+An event application built by Njenga Kariuki for the Stanford GSB MSx 2025 graduation celebration. It brings shuttle registration, passenger counts, a coordinator view and music requests into one mobile-friendly interface.
 
-## Features
+## Implementation
 
-The web application allows guests to:
+- React and TypeScript interface with Tailwind styling.
+- Shuttle selection, registration, guest counts, updates and cancellations.
+- Supabase-backed shuttle and registration records, with realtime subscriptions that refresh the views after changes.
+- An administrator manifest and a separate DJ request view.
 
-* Browse and select from available shuttle times between Stanford GSB and Rosewood
-* Register themselves and additional guests with a simple form
-* View real-time shuttle capacity to plan accordingly
-* Receive immediate confirmation of successful bookings
-* Access a live manifest of passengers on each shuttle
-* Easily modify or cancel reservations as needed
+The repository preserves the May 2025 event implementation. The event has concluded; the source is useful for understanding the product and integration work, rather than making a new registration for that event.
 
-The interface is responsive across all devices with a clean design appropriate for the celebration.
+## Local setup
 
-## Technology Stack
+Run `npm ci` and provide your own `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` using `.env.example`, then run `npm run dev`. `npm run build` creates a production build.
 
-Built with:
+The client expects `shuttles` and `registrations` tables; the source shows the fields it reads and writes. Database migrations, original event records and hosted configuration are not included. Use a separate project with synthetic registrations when exploring the app.
 
-* React & TypeScript for a dynamic interface
-* React Context API for state management
-* Local Storage for persistent data between sessions
-* Tailwind CSS for efficient styling
-* Lucide React for iconography
+The Supabase anon key is a client key. Access to the underlying data must be controlled through appropriate database policies; the coordinator view is not protected by a separate login in this version. Reusing this for a new event would require that access-control work and your own database setup.
 
-This project demonstrates how technical skills can be applied to create straightforward solutions for real-world scenarios. It balances functionality with user experience in a practical application.
+The original planning brief is retained in [project.md](project.md). Stanford branding identifies the historical event context; this is an independently built application.
